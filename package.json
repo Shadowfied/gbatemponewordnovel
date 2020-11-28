@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node fillDb.js && cd frontend && npm install && npm run build",
-    "start": "npm run build && node ./index.js",
+    "start": "node ./index.js",
     "deploy": "npm run build && npm run start"
   },
   "author": "",
