@@ -42,6 +42,7 @@ const TextPart = ({ post }) => {
           zIndex: '99',
           minWidth: '200px',
           display: hoverVisible ? 'block' : 'none',
+          textAlign: 'left',
         }}
       >
         Posted by: {post.author}
