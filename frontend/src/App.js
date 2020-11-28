@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import TextPart from './TextPart';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -23,7 +24,7 @@ const App = () => {
               </>
             );
           }
-          buf.push(post.text + ' ');
+          buf.push(<TextPart post={post} />, ' ');
           return buf;
         })}
     </div>
