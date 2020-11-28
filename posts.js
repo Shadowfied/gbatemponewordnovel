@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const parse = require('node-html-parser').parse;
+const he = require('he');
 const Database = require('better-sqlite3');
 const path = require('path');
 const db = new Database(path.resolve(__dirname + '/db.sqlite'));
@@ -34,6 +35,27 @@ const getLatestPage = () => {
   return page;
 };
 
+const filterMessage = (post) => {
+  let filteredText = post.replace(
+    /— Posts automatically merged - Please don't double post! —/g,
+    ''
+  );
+
+  filteredText = filteredText.replace(/[\t\r]|&nbsp;/g, '').trim();
+
+  if (filteredText.match(/\n/)) {
+    filteredText = filteredText.split(/\n/)[0];
+  }
+
+  filteredText = filteredText.split(' ');
+
+  if (filteredText.length > 1) {
+    return `${filteredText[0]} ${filteredText[1]}`;
+  }
+
+  return filteredText[0];
+};
+
 const insertPost = (post) => {
   const exists = db.prepare(`SELECT id FROM posts WHERE id = ${post.id}`).get();
 
@@ -65,13 +87,25 @@ const fetchPage = async (page) => {
   let nextLink = '';
 
   posts.forEach((post) => {
+    let contentNodes = post.querySelector('blockquote.messageText').childNodes;
+    let text;
+
+    contentNodes.forEach((node) => {
+      if (node.rawTagName !== 'div') {
+        let checkText = he
+          .decode(node.innerText)
+          .replace(/[\t\r]|&nbsp;/g, '')
+          .trim();
+        if (checkText) {
+          text = checkText;
+        }
+      }
+    });
+
     insertPost({
       id: post.querySelector('.postNumber').text.replace('#', ''),
       author: post.querySelector('a.username').text,
-      text: post
-        .querySelector('blockquote.messageText')
-        .text.replace(/[\n\t\r]|&nbsp;/g, '')
-        .trim(),
+      text: filterMessage(text),
       url: post.querySelector('.postNumber').getAttribute('href'),
       date: post.querySelector('.DateTime').text,
       pageNumber: currentPage,
