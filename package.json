@@ -1,0 +1,21 @@
+{
+  "name": "gbatemponewordnovel-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node fillDb.js && cd frontend && npm install && npm run build",
+    "start": "npm run build && node ./index.js",
+    "deploy": "npm run build && npm run start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^7.1.1",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
+    "node-html-parser": "^2.0.0"
+  },
+  "proxy": "http://localhost:8080"
+}

@@ -1,0 +1,8 @@
+node_modules
+db.sqlite
+frontend/node_modules
+frontend/build
+frontend/.eslintcache
+.DS_Store
+._DS_Store
+.vercel

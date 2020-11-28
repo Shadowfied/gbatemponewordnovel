@@ -1,0 +1,1 @@
+# GBAtemp One Word Novel
