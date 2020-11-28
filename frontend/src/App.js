@@ -11,7 +11,8 @@ const App = () => {
   }, []);
 
   return (
-    <div className='App'>
+    <div className='App' style={{ textAlign: 'justify' }}>
+      <h1>GBAtemp One Word Novel Reader</h1>
       {posts &&
         posts.map((post, index) => {
           const buf = [];
