@@ -90,6 +90,7 @@ const fetchPage = async (page) => {
     let contentNodes = post.querySelector('blockquote.messageText').childNodes;
     let text;
 
+    // TODO: Move into filterMessage function?
     contentNodes.forEach((node) => {
       if (node.rawTagName !== 'div') {
         let checkText = he
@@ -102,12 +103,25 @@ const fetchPage = async (page) => {
       }
     });
 
+    const dateTitle = post.querySelector('.DateTime').getAttribute('title');
+    let date;
+
+    if (dateTitle) {
+      date = dateTitle;
+    } else {
+      date = new Date(
+        parseInt(post.querySelector('.DateTime').getAttribute('data-time')) *
+          1000
+      );
+      date = date.toUTCString();
+    }
+
     insertPost({
       id: post.querySelector('.postNumber').text.replace('#', ''),
       author: post.querySelector('a.username').text,
       text: filterMessage(text),
       url: post.querySelector('.postNumber').getAttribute('href'),
-      date: post.querySelector('.DateTime').text,
+      date: date,
       pageNumber: currentPage,
     });
   });
