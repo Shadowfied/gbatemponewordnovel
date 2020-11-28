@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 const TextPart = ({ post }) => {
   const [hoverVisible, setHoverVisible] = useState(false);
+  const [lastMouseX, setLastMouseX] = useState(0);
 
   return (
     <div
@@ -15,7 +16,10 @@ const TextPart = ({ post }) => {
         backgroundColor: hoverVisible ? 'rgba(0,0,0,0.80)' : '',
         color: hoverVisible ? 'white' : '',
       }}
-      onMouseEnter={() => setHoverVisible(true)}
+      onMouseEnter={(e) => {
+        setLastMouseX(e.clientX);
+        setHoverVisible(true);
+      }}
       onMouseOut={() => setHoverVisible(false)}
     >
       {post.text}
@@ -24,12 +28,16 @@ const TextPart = ({ post }) => {
         style={{
           position: 'absolute',
           top: '100%',
-          left: '0',
+          left: lastMouseX && lastMouseX < window.innerWidth / 2 ? '0' : '',
+          right: lastMouseX && lastMouseX > window.innerWidth / 2 ? '0' : '',
           pointerEvents: 'none',
           padding: '1rem',
           backgroundColor: 'rgba(0,0,0,0.80)',
           borderRadius: '1rem',
-          borderTopLeftRadius: '0',
+          borderTopLeftRadius:
+            lastMouseX && lastMouseX < window.innerWidth / 2 ? '0' : '1rem',
+          borderTopRightRadius:
+            lastMouseX && lastMouseX > window.innerWidth / 2 ? '0' : '1rem',
           color: 'white',
           zIndex: '99',
           minWidth: '200px',
