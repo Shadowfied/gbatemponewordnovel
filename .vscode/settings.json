@@ -1,0 +1,11 @@
+{
+  "conventionalCommits.scopes": [
+    "release",
+    "readme",
+    "comments",
+    "textpart",
+    "pipeline",
+    "vscode",
+    "dependencies"
+  ]
+}
