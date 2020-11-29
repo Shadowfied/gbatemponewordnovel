@@ -27,6 +27,7 @@ const Part = styled.div`
   padding: 0.2rem 0.1rem;
   border-top-left-radius: 0.4rem;
   border-top-right-radius: 0.4rem;
+  transition: 0.3s ease-in-out;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.8);
@@ -39,16 +40,19 @@ const PartHoverInfo = styled.div`
   top: 100%;
   pointer-events: none;
   padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0);
   border-radius: 1rem;
-  color: white;
+  color: transparent;
   z-index: 99;
   min-width: 200px;
-  display: none;
   text-align: left;
+  transition: 0.3s ease-in-out;
+  transition-property: background-color, color;
+  user-select: none;
 
   ${Part}:hover & {
-    display: block;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
   }
 
   ${({ lastMouseX }) =>
