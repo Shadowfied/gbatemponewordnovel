@@ -1,57 +1,68 @@
 import { useState } from 'react';
+import styled, { css } from 'styled-components';
 
 const TextPart = ({ post }) => {
-  const [hoverVisible, setHoverVisible] = useState(false);
   const [lastMouseX, setLastMouseX] = useState(0);
 
   return (
-    <div
-      className='text-part'
-      style={{
-        display: 'inline',
-        position: 'relative',
-        padding: '0.2rem 0.1rem',
-        borderTopLeftRadius: '0.4rem',
-        borderTopRightRadius: '0.4rem',
-        backgroundColor: hoverVisible ? 'rgba(0,0,0,0.80)' : '',
-        color: hoverVisible ? 'white' : '',
-      }}
+    <Part
       onMouseEnter={(e) => {
         setLastMouseX(e.clientX);
-        setHoverVisible(true);
       }}
-      onMouseOut={() => setHoverVisible(false)}
     >
       {post.text}
-      <div
-        className='text-part__hover-info'
-        style={{
-          position: 'absolute',
-          top: '100%',
-          left: lastMouseX && lastMouseX < window.innerWidth / 2 ? '0' : '',
-          right: lastMouseX && lastMouseX > window.innerWidth / 2 ? '0' : '',
-          pointerEvents: 'none',
-          padding: '1rem',
-          backgroundColor: 'rgba(0,0,0,0.80)',
-          borderRadius: '1rem',
-          borderTopLeftRadius:
-            lastMouseX && lastMouseX < window.innerWidth / 2 ? '0' : '1rem',
-          borderTopRightRadius:
-            lastMouseX && lastMouseX > window.innerWidth / 2 ? '0' : '1rem',
-          color: 'white',
-          zIndex: '99',
-          minWidth: '200px',
-          display: hoverVisible ? 'block' : 'none',
-          textAlign: 'left',
-        }}
-      >
+      <PartHoverInfo lastMouseX={lastMouseX}>
         Posted by: {post.author}
         <br />
         <br />
         Posted on: {post.date}
-      </div>
-    </div>
+      </PartHoverInfo>
+    </Part>
   );
 };
+
+const Part = styled.div`
+  display: inline-block;
+  position: relative;
+  padding: 0.2rem 0.1rem;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+  }
+`;
+
+const PartHoverInfo = styled.div`
+  position: absolute;
+  top: 100%;
+  pointer-events: none;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 1rem;
+  color: white;
+  z-index: 99;
+  min-width: 200px;
+  display: none;
+  text-align: left;
+
+  ${Part}:hover & {
+    display: block;
+  }
+
+  ${({ lastMouseX }) =>
+    lastMouseX &&
+    css`
+      left: ${lastMouseX < window.innerWidth / 2 ? '0' : ''};
+      right: ${lastMouseX > window.innerWidth / 2 ? '0' : ''};
+      border-top-left-radius: ${lastMouseX < window.innerWidth / 2
+        ? '0'
+        : '1rem'};
+      border-top-right-radius: ${lastMouseX > window.innerWidth / 2
+        ? '0'
+        : '1rem'};
+    `}
+`;
 
 export default TextPart;
