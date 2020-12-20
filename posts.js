@@ -79,11 +79,9 @@ const insertPost = (post) => {
 
   if (!exists) {
     // Insert the post
-    const insertionStmt = db.prepare(
+    db.prepare(
       'INSERT INTO posts VALUES (@id, @author, @text, @url, @date, @pageNumber)'
-    );
-
-    insertionStmt.run({
+    ).run({
       id: post.id,
       author: post.author,
       text: post.text,
