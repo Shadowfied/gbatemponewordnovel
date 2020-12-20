@@ -72,7 +72,10 @@ const filterMessage = (post) => {
 // Insert a post into the database
 const insertPost = (post) => {
   // Check if the post already exists
-  const exists = db.prepare(`SELECT id FROM posts WHERE id = ${post.id}`).get();
+  const exists = db
+    .prepare(`SELECT id FROM posts WHERE id = @id`)
+    .bind({ id: post.id })
+    .get();
 
   if (!exists) {
     // Insert the post
