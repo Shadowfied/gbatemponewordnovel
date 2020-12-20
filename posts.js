@@ -96,11 +96,8 @@ const insertPost = (post) => {
 
 // Recursive function to fetch and parse everything we need to gather from the posts
 const fetchPage = async (page) => {
-  // Do the fetch
-  const toFetch = await fetch(`https://gbatemp.net/${page}`);
-
-  // Get the actual DOM text
-  const pageText = await toFetch.text();
+  // Fetch and get text
+  const pageText = await (await fetch(`https://gbatemp.net/${page}`)).text();
 
   // Parse as DOM so we can query it
   const dom = parse(pageText);
