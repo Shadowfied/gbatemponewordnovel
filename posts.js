@@ -77,16 +77,17 @@ const insertPost = (post) => {
   if (!exists) {
     // Insert the post
     const insertionStmt = db.prepare(
-      'INSERT INTO posts (id, author, text, url, date, pageNumber) VALUES (?, ?, ?, ?, ?, ?)'
+      'INSERT INTO posts VALUES (@id, @author, @text, @url, @date, @pageNumber)'
     );
-    const info = insertionStmt.run(
-      post.id,
-      post.author,
-      post.text,
-      post.url,
-      post.date,
-      post.pageNumber
-    );
+
+    insertionStmt.run({
+      id: post.id,
+      author: post.author,
+      text: post.text,
+      url: post.url,
+      date: post.date,
+      pageNumber: post.pageNumber,
+    });
   }
 };
 
